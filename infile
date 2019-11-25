@@ -1,0 +1,96 @@
+def main():
+    endProgram = 'no'
+    notGreenCost = []
+    goneGreenCosts = []
+    savings = []
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+              'November', 'December']
+    option = int(input("input: "))
+    while endProgram == 'no':
+        if option == 1:
+            notGreenCost = getNotGreen(notGreenCost, months)
+
+            goneGreenCosts = getGoneGreen(goneGreenCosts, months)
+
+            savings = energySaved(notGreenCost, goneGreenCosts, savings)
+            option = int(input("input: "))
+        elif option == 2:
+            displayInfo(notGreenCost, goneGreenCosts, savings, months)
+            option = int(input("input: "))
+        elif option == 3:
+            writeToFile(months, savings)
+            option = int(input("input: "))
+        elif option == 4:
+            readFromFile(months, savings)
+            option = int(input("input: "))
+        else:
+            endProgram = input("Do you want to end the program? Yes or no")
+
+
+def writeToFile(months_list, savings_list):
+    outFile = 'savings1.txt'
+    f = open(outFile, "a")
+
+    counter = 0
+    while counter < 12:
+        f.write(str(months_list[counter]) + ":")
+        f.write(str(savings_list[counter]) + "\n")
+        counter += 1
+    f.close()
+
+
+def readFromFile(months_list, savings_list):
+    infile = 'savings1.txt'
+    f = open(infile, "r")
+    str1 = f.read()
+    print(str1)
+    while True:
+        v = str1.split('\n')
+        for line in v:
+            months_list, savings_list = line.split(':')
+            print(months_list)
+            print(savings_list)
+    f.close()
+
+
+def getNotGreen(notGreenCost, months):
+    counter = 0
+
+    while counter < 12:
+        s = input("Enter NOT GREEN energy costs for " + months[counter])
+        notGreenCost.append(s)
+        counter += 1
+    return notGreenCost
+
+
+def getGoneGreen(goneGreenCost, months):
+    counter = 0
+
+    while counter < 12:
+        t = input("Enter GONE GREEN energy costs for " + months[counter])
+
+        goneGreenCost.append(t)
+        counter += 1
+    return goneGreenCost
+
+
+def energySaved(notGreenCost, goneGreenCost, saving):
+    counter = 0
+    while counter < 12:
+        saving_test = int(notGreenCost[counter]) - int(goneGreenCost[counter])
+        saving.append(saving_test)
+        counter += 1
+    return saving
+
+
+def displayInfo(notGreenCost, goneGreenCost, savings, months):
+    counter = 0
+    while counter < 12:
+        print("Information for ", months[counter])
+        print("Saving $ ", savings[counter])
+        print("Not Green Costs $ ", notGreenCost[counter])
+        print("Gone green Costs $", goneGreenCost[counter])
+        counter += 1
+
+
+main()
